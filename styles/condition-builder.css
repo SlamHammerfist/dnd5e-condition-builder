@@ -1,0 +1,175 @@
+/* D&D 5e Condition Builder */
+
+.condition-builder {
+  --cb-pass: #3f9a4a;
+  --cb-fail: #c0453a;
+  --cb-muted: var(--color-text-secondary, #8a867c);
+  --cb-line: var(--color-border, rgba(127, 127, 127, 0.35));
+  --cb-group-bg: rgba(127, 127, 127, 0.07);
+  min-width: 520px;
+}
+
+.condition-builder .window-content {
+  overflow-y: auto;
+}
+
+.condition-builder .cb-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.condition-builder .hint {
+  margin: 0;
+  color: var(--cb-muted);
+  font-size: var(--font-size-12, 12px);
+}
+
+/* Groups */
+.condition-builder .cb-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem 0.5rem;
+  border: 1px solid var(--cb-line);
+  border-left: 3px solid var(--color-warm-2, #c9a24a);
+  border-radius: 4px;
+  background: var(--cb-group-bg);
+}
+
+.condition-builder .cb-group.root {
+  border-left-width: 1px;
+}
+
+.condition-builder .cb-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.condition-builder .cb-group-header select {
+  flex: 0 0 auto;
+  width: auto;
+  font-weight: bold;
+}
+
+.condition-builder .cb-group-header button:not(.icon) {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 0.5rem;
+  height: 26px;
+  font-size: var(--font-size-12, 12px);
+}
+
+.condition-builder .cb-group-header .cb-icon {
+  margin-left: auto;
+}
+
+.condition-builder .cb-children {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+}
+
+.condition-builder .cb-empty {
+  font-style: italic;
+}
+
+/* Rules */
+.condition-builder .cb-rule {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.35rem;
+}
+
+.condition-builder .cb-raw-rule {
+  grid-template-columns: 1.1rem minmax(0, 1fr) auto;
+}
+
+.condition-builder .cb-key-wrap,
+.condition-builder .cb-raw-wrap,
+.condition-builder .cb-value-wrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.condition-builder .cb-key-wrap .effect-select {
+  width: 100%;
+}
+
+.condition-builder .cb-key-label {
+  min-height: 1em;
+  padding: 1px 2px 0;
+  color: var(--cb-muted);
+  font-size: var(--font-size-11, 11px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.condition-builder input.cb-key,
+.condition-builder textarea {
+  font-family: var(--font-mono, monospace);
+  font-size: var(--font-size-12, 12px);
+}
+
+.condition-builder .cb-rule select,
+.condition-builder .cb-rule input {
+  width: 100%;
+  min-width: 0;
+}
+
+.condition-builder textarea.invalid {
+  outline: 2px solid var(--cb-fail);
+}
+
+.condition-builder textarea.cb-raw {
+  width: 100%;
+  min-height: 14em;
+  resize: vertical;
+}
+
+.condition-builder .cb-icon {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+}
+
+/* Pass / fail marks */
+.condition-builder .cb-result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 26px;
+  color: var(--cb-muted);
+}
+
+.condition-builder .cb-result.pass { color: var(--cb-pass); }
+.condition-builder .cb-result.fail { color: var(--cb-fail); }
+
+.condition-builder .cb-warning {
+  margin: 0;
+  min-height: 0;
+  color: var(--cb-fail);
+  font-size: var(--font-size-12, 12px);
+}
+
+.condition-builder .cb-warning:empty {
+  display: none;
+}
+
+.condition-builder .form-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.condition-builder .form-footer [data-action="toggle-raw"] {
+  margin-right: auto;
+  flex: 0 0 auto;
+}

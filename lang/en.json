@@ -1,0 +1,93 @@
+{
+  "CONDBUILDER": {
+    "Title": "Conditions: {name}",
+    "TitleGeneric": "Conditions",
+    "Intro": "The change applies only when these rules pass. Leave it empty to always apply.",
+    "IntroEffect": "The whole effect applies only when these rules pass. Leave it empty to always apply.",
+    "CheckedAgainst": "Ticks show whether each rule passes for {actor} right now.",
+    "NoActor": "This effect isn't on an actor, so rules can't be checked live.",
+    "Key": "Key",
+    "Value": "Value",
+    "ValueList": "Values, separated by commas",
+    "AddRule": "Rule",
+    "AddGroup": "Group",
+    "Remove": "Remove",
+    "Empty": "No rules: always applies.",
+    "Incomplete": "Rules without a key aren't saved.",
+    "Raw": "Edit as JSON",
+    "Visual": "Back to builder",
+    "RawHint": "dnd5e filter JSON. Parts the builder can't show are kept as they are.",
+    "RawInvalid": "That isn't valid JSON.",
+    "RawRow": "Advanced rule (edit as JSON)",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Pass": "Passes right now",
+    "Fail": "Fails right now",
+    "DuringRoll": "Only known during a roll",
+    "Unknown": "Can't check this rule now",
+    "RollGroup": "Current Roll",
+    "StatusGroup": "Statuses",
+    "ItemGroup": "Source Item",
+    "Yes": "Yes",
+    "No": "No",
+    "Groups": {
+      "AND": "All of",
+      "OR": "Any of",
+      "NOR": "None of",
+      "NAND": "Not all of",
+      "XOR": "An odd number of",
+      "NOT": "Not"
+    },
+    "Ops": {
+      "exact": "is",
+      "gt": "greater than",
+      "gte": "at least",
+      "lt": "less than",
+      "lte": "at most",
+      "in": "is one of",
+      "has": "includes",
+      "hasany": "includes any of",
+      "hasall": "includes all of",
+      "subsetof": "only includes",
+      "contains": "text contains",
+      "icontains": "text contains (any case)",
+      "startswith": "starts with",
+      "istartswith": "starts with (any case)",
+      "endswith": "ends with",
+      "iendswith": "ends with (any case)",
+      "empty": "is empty"
+    },
+    "OpGroups": {
+      "Compare": "Compare",
+      "List": "Lists and sets",
+      "Text": "Text"
+    },
+    "Roll": {
+      "type": "Roll Type",
+      "ability": "Ability",
+      "proficient": "Proficient",
+      "skill": "Skill",
+      "tool": "Tool",
+      "attackMode": "Attack Mode",
+      "attackType": "Attack Type",
+      "classification": "Attack Classification",
+      "itemName": "Item Name",
+      "itemIdentifier": "Item Identifier",
+      "itemProperties": "Item Properties",
+      "Types": {
+        "ability": "Ability check or save",
+        "skill": "Skill check",
+        "tool": "Tool check",
+        "initiative": "Initiative",
+        "attack": "Attack",
+        "save": "Save (activity)"
+      }
+    },
+    "Settings": {
+      "Enabled": {
+        "Name": "Use the condition builder",
+        "Hint": "The filter button on Change Conditions opens the visual builder. Turn off to use the system's JSON editor."
+      }
+    }
+  }
+}
