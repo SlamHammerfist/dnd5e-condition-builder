@@ -1,10 +1,11 @@
 name: Release
 
 # Push a tag like v1.5.0 to build module.zip and publish a GitHub release.
+# Only vMAJOR.MINOR.PATCH tags trigger it, so a placeholder like vX.Y.Z does not.
 on:
   push:
     tags:
-      - "v*"
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 permissions:
   contents: write
@@ -19,6 +20,10 @@ jobs:
         id: version
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME is not vMAJOR.MINOR.PATCH."
+            exit 1
+          fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           FILE_VERSION="$(jq -r .version module.json)"
           if [ "$FILE_VERSION" != "$VERSION" ]; then
