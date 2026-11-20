@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 (2026-11-19)
 ### Changed
 - The builder window now uses the dnd5e system's window style, like Crafting and the Ability Score Generator: the large "Conditions" title with the effect's name beneath it, a gold-bordered Rules card, gold Add Rule / Add Group buttons, and quiet remove buttons.
 - Nested groups have a gold rail, rules are separated by thin lines, and pass/fail marks use the system's success and failure colours.

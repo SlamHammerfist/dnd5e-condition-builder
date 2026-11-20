@@ -2,13 +2,13 @@
   "id": "dnd5e-condition-builder",
   "title": "D&D 5e Condition Builder",
   "description": "Replaces the raw JSON editor for Active Effect Change Conditions with a visual builder: pick a key, a comparison and a value, group rules with all/any/none, and see whether each rule passes for the actor right now.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authors": [
     { "name": "Slam Hammerfist" }
   ],
   "url": "https://github.com/SlamHammerfist/dnd5e-condition-builder",
   "manifest": "https://github.com/SlamHammerfist/dnd5e-condition-builder/releases/latest/download/module.json",
-  "download": "https://github.com/SlamHammerfist/dnd5e-condition-builder/releases/download/v1.0.0/module.zip",
+  "download": "https://github.com/SlamHammerfist/dnd5e-condition-builder/releases/download/v1.1.0/module.zip",
   "bugs": "https://github.com/SlamHammerfist/dnd5e-condition-builder/issues",
   "readme": "https://github.com/SlamHammerfist/dnd5e-condition-builder/blob/main/README.md",
   "changelog": "https://github.com/SlamHammerfist/dnd5e-condition-builder/blob/main/CHANGELOG.md",
