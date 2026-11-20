@@ -1,11 +1,17 @@
-/* D&D 5e Condition Builder */
+/* ---------------------------------- */
+/*  Condition Builder window          */
+/*  Built on the dnd5e2 application   */
+/*  styles: cards, gold buttons and   */
+/*  unbuttons come from the system    */
+/* ---------------------------------- */
 
 .condition-builder {
-  --cb-pass: #3f9a4a;
-  --cb-fail: #c0453a;
-  --cb-muted: var(--color-text-secondary, #8a867c);
-  --cb-line: var(--color-border, rgba(127, 127, 127, 0.35));
-  --cb-group-bg: rgba(127, 127, 127, 0.07);
+  --cb-gold: var(--dnd5e-color-gold, #9f9275);
+  --cb-muted: var(--color-text-secondary, color-mix(in srgb, currentColor 60%, transparent));
+  --cb-line: var(--color-border-light-2, rgba(0, 0, 0, 0.15));
+  --cb-card: var(--dnd5e-background-card, color-mix(in srgb, currentColor 7%, transparent));
+  --cb-pass: var(--dnd5e-color-success, var(--color-level-success, #3a8a3a));
+  --cb-fail: var(--dnd5e-color-failure, var(--color-level-error, #b03030));
   min-width: 520px;
 }
 
@@ -16,64 +22,96 @@
 .condition-builder .cb-body {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 12px;
 }
 
 .condition-builder .hint {
   margin: 0;
+  font-size: var(--font-size-12);
+  font-style: italic;
   color: var(--cb-muted);
-  font-size: var(--font-size-12, 12px);
+}
+
+/* Card */
+.condition-builder fieldset.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 10px;
 }
 
 /* Groups */
 .condition-builder .cb-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.4rem 0.5rem 0.5rem;
-  border: 1px solid var(--cb-line);
-  border-left: 3px solid var(--color-warm-2, #c9a24a);
-  border-radius: 4px;
-  background: var(--cb-group-bg);
+  gap: 6px;
 }
 
-.condition-builder .cb-group.root {
-  border-left-width: 1px;
+/* Nested groups: gold rail, like a card within the card */
+.condition-builder .cb-group:not(.root) {
+  padding: 6px 8px;
+  border: 1px solid var(--cb-line);
+  border-left: 3px solid var(--cb-gold);
+  border-radius: 4px;
+  background: var(--cb-card);
 }
 
 .condition-builder .cb-group-header {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cb-gold);
+}
+
+.condition-builder .cb-group:not(.root) > .cb-group-header {
+  border-bottom-color: var(--cb-line);
 }
 
 .condition-builder .cb-group-header select {
   flex: 0 0 auto;
   width: auto;
+  font-family: var(--dnd5e-font-roboto-slab);
   font-weight: bold;
 }
 
-.condition-builder .cb-group-header button:not(.icon) {
-  flex: 0 0 auto;
-  width: auto;
-  padding: 0 0.5rem;
-  height: 26px;
-  font-size: var(--font-size-12, 12px);
+.condition-builder .cb-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
 }
 
-.condition-builder .cb-group-header .cb-icon {
-  margin-left: auto;
+.condition-builder .cb-controls .gold-button {
+  width: 26px;
+  height: 26px;
+  font-size: var(--font-size-12);
+}
+
+.condition-builder .control-button {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: var(--cb-muted);
+}
+
+.condition-builder .control-button:hover,
+.condition-builder .control-button:focus-visible {
+  color: var(--color-text-primary);
 }
 
 .condition-builder .cb-children {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 6px;
   padding-left: 1.1rem;
 }
 
 .condition-builder .cb-empty {
-  font-style: italic;
+  padding: 2px 0;
+  text-align: center;
 }
 
 /* Rules */
@@ -81,7 +119,12 @@
   display: grid;
   grid-template-columns: 1.1rem minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto;
   align-items: start;
-  gap: 0.35rem;
+  gap: 6px;
+}
+
+.condition-builder .cb-rule + .cb-rule {
+  padding-top: 6px;
+  border-top: 1px solid var(--cb-line);
 }
 
 .condition-builder .cb-raw-rule {
@@ -103,8 +146,9 @@
 .condition-builder .cb-key-label {
   min-height: 1em;
   padding: 1px 2px 0;
+  font-size: var(--font-size-11);
+  font-style: italic;
   color: var(--cb-muted);
-  font-size: var(--font-size-11, 11px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -113,7 +157,7 @@
 .condition-builder input.cb-key,
 .condition-builder textarea {
   font-family: var(--font-mono, monospace);
-  font-size: var(--font-size-12, 12px);
+  font-size: var(--font-size-12);
 }
 
 .condition-builder .cb-rule select,
@@ -132,13 +176,6 @@
   resize: vertical;
 }
 
-.condition-builder .cb-icon {
-  flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-}
-
 /* Pass / fail marks */
 .condition-builder .cb-result {
   display: inline-flex;
@@ -151,25 +188,44 @@
 
 .condition-builder .cb-result.pass { color: var(--cb-pass); }
 .condition-builder .cb-result.fail { color: var(--cb-fail); }
+.condition-builder .cb-result.roll { color: var(--cb-gold); }
 
 .condition-builder .cb-warning {
   margin: 0;
-  min-height: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--cb-gold);
+  border-radius: 4px;
+  background: var(--cb-card);
+  font-size: var(--font-size-12);
+  font-style: italic;
   color: var(--cb-fail);
-  font-size: var(--font-size-12, 12px);
 }
 
 .condition-builder .cb-warning:empty {
   display: none;
 }
 
-.condition-builder .form-footer {
+/* Footer */
+.condition-builder .cb-footer {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: 8px;
+  margin: 0;
 }
 
-.condition-builder .form-footer [data-action="toggle-raw"] {
-  margin-right: auto;
+.condition-builder .cb-footer button {
+  margin: 0;
+}
+
+.condition-builder .cb-footer .cb-toggle,
+.condition-builder .cb-footer .cb-cancel {
   flex: 0 0 auto;
+  width: auto;
+}
+
+.condition-builder .cb-footer .cb-toggle {
+  margin-right: auto;
+}
+
+.condition-builder .cb-footer .cb-save {
+  flex: 1;
 }

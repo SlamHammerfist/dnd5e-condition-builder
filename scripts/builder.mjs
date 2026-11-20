@@ -1,14 +1,23 @@
 import * as M from "./model.mjs";
 import { buildContext, kindFor } from "./keys.mjs";
 
+/**
+ * Built on the dnd5e system's application base, like Crafting and the Ability Score Generator,
+ * so the window gets the system frame, the large title with the effect's name beneath it,
+ * and the system's cards and gold buttons.
+ * Falls back to a plain ApplicationV2 on dnd5e versions without the mixin.
+ */
 const { ApplicationV2 } = foundry.applications.api;
+const BaseApp = globalThis.dnd5e?.applications?.api?.ApplicationV2Mixin
+  ? dnd5e.applications.api.ApplicationV2Mixin(ApplicationV2, { handlebars: false })
+  : ApplicationV2;
 
 /**
  * Visual editor for one dnd5e filters field (change conditions or effect conditions).
  * Edits a tree of groups and rules, previews each against the actor's current data,
  * and writes filter JSON back to the field on Save.
  */
-export default class ConditionBuilder extends ApplicationV2 {
+export default class ConditionBuilder extends BaseApp {
   /**
    * @param {object} options
    * @param {HTMLElement} options.input        The <filters-input> being edited.
@@ -28,7 +37,8 @@ export default class ConditionBuilder extends ApplicationV2 {
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["condition-builder"],
+    classes: ["dnd5e2", "condition-builder"],
+    tag: "section",
     window: {
       icon: "fa-solid fa-filter",
       resizable: true
@@ -38,9 +48,12 @@ export default class ConditionBuilder extends ApplicationV2 {
 
   /** @override */
   get title() {
-    return this.effect?.name
-      ? game.i18n.format("CONDBUILDER.Title", { name: this.effect.name })
-      : game.i18n.localize("CONDBUILDER.TitleGeneric");
+    return game.i18n.localize("CONDBUILDER.Title");
+  }
+
+  /** The dnd5e window header shows the title large and the subtitle beneath it. */
+  get subtitle() {
+    return this.effect?.name ?? "";
   }
 
   /* -------------------------------------------- */
@@ -53,30 +66,34 @@ export default class ConditionBuilder extends ApplicationV2 {
     const intro = this.effectLevel ? "CONDBUILDER.IntroEffect" : "CONDBUILDER.Intro";
     body.append(el("p", "hint", game.i18n.localize(intro)));
 
+    const card = el("fieldset", "card cb-card");
     if ( this.rawMode ) {
+      card.append(el("legend", null, game.i18n.localize("CONDBUILDER.Json")));
       const area = el("textarea", "cb-raw");
       area.value = this.rawText;
       area.spellcheck = false;
       area.rows = 14;
-      body.append(area, el("p", "hint", game.i18n.localize("CONDBUILDER.RawHint")));
+      card.append(area, el("p", "hint", game.i18n.localize("CONDBUILDER.RawHint")));
     } else {
+      card.append(el("legend", null, game.i18n.localize("CONDBUILDER.Rules")));
       const live = this.context.actor
         ? game.i18n.format("CONDBUILDER.CheckedAgainst", { actor: this.context.actor.name })
         : game.i18n.localize("CONDBUILDER.NoActor");
-      body.append(el("p", "hint cb-live", live));
+      card.append(el("p", "hint cb-live", live));
       const tree = el("div", "cb-tree");
       tree.append(this.#renderGroup(this.root, true));
-      body.append(tree);
+      card.append(tree);
     }
+    body.append(card);
 
     body.append(el("p", "cb-warning", ""));
 
-    const footer = el("footer", "form-footer");
+    const footer = el("footer", "form-footer cb-footer");
     footer.append(
       button(this.rawMode ? "CONDBUILDER.Visual" : "CONDBUILDER.Raw", "toggle-raw",
-        this.rawMode ? "fa-solid fa-diagram-project" : "fa-solid fa-code"),
-      button("CONDBUILDER.Cancel", "cancel", "fa-solid fa-xmark"),
-      button("CONDBUILDER.Save", "save", "fa-solid fa-floppy-disk")
+        this.rawMode ? "fa-solid fa-diagram-project" : "fa-solid fa-code", "cb-toggle"),
+      button("CONDBUILDER.Cancel", "cancel", "fa-solid fa-xmark", "cb-cancel"),
+      button("CONDBUILDER.Save", "save", "fa-solid fa-floppy-disk", "cb-save")
     );
     body.append(footer);
 
@@ -142,11 +159,13 @@ export default class ConditionBuilder extends ApplicationV2 {
       select.append(option);
     }
     header.append(select);
-    header.append(
-      button("CONDBUILDER.AddRule", "add-rule", "fa-solid fa-plus"),
-      button("CONDBUILDER.AddGroup", "add-group", "fa-solid fa-layer-group")
+    const controls = el("div", "cb-controls");
+    controls.append(
+      goldButton("CONDBUILDER.AddRule", "add-rule", "fa-solid fa-plus"),
+      goldButton("CONDBUILDER.AddGroup", "add-group", "fa-solid fa-layer-group")
     );
-    if ( !isRoot ) header.append(iconButton("CONDBUILDER.Remove", "remove", "fa-solid fa-trash"));
+    if ( !isRoot ) controls.append(iconButton("CONDBUILDER.RemoveGroup", "remove", "fa-solid fa-trash"));
+    header.append(controls);
     wrap.append(header);
 
     const children = el("div", "cb-children");
@@ -413,8 +432,8 @@ function el(tag, className, text) {
   return element;
 }
 
-function button(label, action, icon) {
-  const b = el("button");
+function button(label, action, icon, className) {
+  const b = el("button", className);
   b.type = "button";
   b.dataset.action = action;
   b.innerHTML = `<i class="${icon}" inert></i> `;
@@ -422,12 +441,20 @@ function button(label, action, icon) {
   return b;
 }
 
+/** Small icon button in the system's gold style, for adding rules and groups. */
+function goldButton(label, action, icon) {
+  const b = iconButton(label, action, icon);
+  b.className = "gold-button";
+  return b;
+}
+
+/** Quiet icon button, like the remove controls on the crafting window. */
 function iconButton(label, action, icon) {
-  const b = el("button", "icon cb-icon");
+  const b = el("button", "unbutton control-button");
   b.type = "button";
   b.dataset.action = action;
   b.ariaLabel = game.i18n.localize(label);
-  b.dataset.tooltip = "";
+  b.dataset.tooltip = label;
   b.innerHTML = `<i class="${icon}" inert></i>`;
   return b;
 }
